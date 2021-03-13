@@ -33,6 +33,10 @@ class Money extends Number
 
         $this
             ->resolveUsing(function ($value) use ($currency, $resolveCallback) {
+                if($this->nullable) {
+                    return null;
+                }
+
                 if ($resolveCallback !== null) {
                     $value = call_user_func_array($resolveCallback, func_get_args());
                 }
@@ -44,6 +48,10 @@ class Money extends Number
 
                 if ($this->inMinorUnits) {
                     $value *= $this->minorUnit($currency);
+                }
+
+                if($this->nullable) {
+                    $value = null;
                 }
 
                 $model->{$attribute} = $value;
